@@ -6,4 +6,4 @@ Ready-to-use docker-compose for (host) system metrics collection with Telegraf +
 
 [Grafana System Dashboard - 928](https://grafana.com/grafana/dashboards/928).
 
-![Capture](assets/).
+![Capture](assets/capture.png).
