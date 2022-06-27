@@ -1,0 +1,45 @@
+version: "3"
+
+networks:
+  metrics:
+    external: false
+
+services:
+  influxdb:
+    image: influxdb:1.8
+    container_name: influxdb
+    restart: always
+    networks: [metrics]
+    ports:
+      - "8086:8086"
+    volumes:
+      - ./influxdb/data:/var/lib/influxdb
+      - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+      - ./influxdb/init:/docker-entrypoint-initdb.d
+    environment:
+      - INFLUXDB_ADMIN_USER=${INFLUXDB_USERNAME} # sourced from .env
+      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_PASSWORD} # sourced from .env
+  telegraf:
+    image: telegraf:latest
+    restart: always
+    container_name: telegraf
+    networks: [metrics]
+    volumes:
+      - ./influxdb/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /:/host:ro
+    environment:
+      - HOST_ETC=/host/etc
+      - HOST_PROC=/host/proc
+      - HOST_SYS=/host/sys
+      - HOST_VAR=/host/var
+      - HOST_RUN=/host/run
+      - HOST_MOUNT_PREFIX=/host
+  grafana:
+    image: grafana/grafana-oss:latest
+    restart: always
+    container_name: grafana
+    networks: [metrics]
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana-storage:/var/lib/grafana

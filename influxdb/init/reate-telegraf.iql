@@ -1,0 +1,5 @@
+CREATE DATABASE telegraf WITH DURATION 31d
+CREATE USER telegraf WITH PASSWORD 'supersecretpassword:)'
+GRANT WRITE ON telegraf to telegraf
+CREATE USER telegraf_read WITH PASSWORD 'supersecretpasswordreadonly:)'
+GRANT READ ON telegraf to telegraf_read
