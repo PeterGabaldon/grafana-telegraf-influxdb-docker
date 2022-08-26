@@ -10,8 +10,6 @@ services:
     container_name: influxdb
     restart: always
     networks: [metrics]
-    ports:
-      - "8086:8086"
     volumes:
       - ./influxdb/data:/var/lib/influxdb
       - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
